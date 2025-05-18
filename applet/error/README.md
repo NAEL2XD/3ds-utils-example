@@ -1,6 +1,6 @@
-# Applet > Notification > Adding Notification
+# Applet > Error
 
-What it does is adds a notification to your Notification Applet, it'll be a blue led if transfered to 3DS. Note that any emulators won't see it nor will get a blue led, you'll need the real hardware.
+Makes customizable popup errors using the error applet!
 
 ## Types of Errors:
 
