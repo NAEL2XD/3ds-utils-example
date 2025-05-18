@@ -1,2 +1,3 @@
-# 3ds-utils-example
-Some CRAZY things for LIBCTRU.
+# ADVANCED LIBCTRU EXAMPLES!!!
+
+Want even more cool and advanced examples? There are more in this repo, it's gotta be updated some time soooo...
