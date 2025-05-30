@@ -1,4 +1,4 @@
-# Applet > Error
+# Applet > Error > Error Codes
 
 Makes customizable popup errors using the error applet!
 
