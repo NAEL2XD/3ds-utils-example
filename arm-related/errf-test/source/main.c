@@ -22,23 +22,28 @@ void trigger_data_abort() {
     *invalid_ptr = 0x12345678;  // Write to invalid memory
 }
 
+void ptfGfb(const char* txt) {
+    printf("%s\n", txt);
+    gfxFlushBuffers();
+}
+
 int main() {
     // Initialize services
     gfxInitDefault();
     consoleInit(GFX_TOP, NULL);
     errfInit();  // Initialize error framework
     
-    printf("ERRF Demo - libctru\n");
-    printf("A: Generic Fatal Error\n");
-    printf("B: Custom Error Message\n");
-    printf("X: Simulate Data Abort\n");
-    printf("Y: Log Only (No Reboot)\n");
-    printf("L: NAND Damaged Error\n");
-    printf("R: Card Removed Error\n");
-    printf("ZL: Prefetch Abort Exception\n");
-    printf("ZR: Undefined Instruction\n");
-    printf("START: Exit\n\n");
-    printf("Note: Most errors will reboot the system!\n");
+    ptfGfb("ERRF Demo - libctru");
+    ptfGfb("A: Generic Fatal Error");
+    ptfGfb("B: Custom Error Message");
+    ptfGfb("X: Simulate Data Abort");
+    ptfGfb("Y: Log Only (No Reboot)");
+    ptfGfb("L: NAND Damaged Error");
+    ptfGfb("R: Card Removed Error");
+    ptfGfb("ZL: Prefetch Abort Exception");
+    ptfGfb("ZR: Undefined Instruction");
+    ptfGfb("START: Exit\n");
+    ptfGfb("Note: Most errors will reboot the system!");
 
     while (aptMainLoop()) {
         gspWaitForVBlank();
@@ -52,8 +57,7 @@ int main() {
             Result myResult = MAKERESULT(RL_PERMANENT, RS_INVALIDARG, RM_APPLICATION, 1);
             
             // Throw a generic fatal error
-            printf("Throwing generic fatal error...\n");
-            gfxFlushBuffers();
+            ptfGfb("Throwing generic fatal error...");
             ERRF_ThrowResult(myResult);
             
             // This line will only execute if throw fails
@@ -65,25 +69,24 @@ int main() {
             ERRF_SetUserString("ERRF Demo Custom String");
             
             // Throw error with custom message
-            printf("Throwing custom message error...\n");
-            gfxFlushBuffers();
+
+            ptfGfb("Throwing custom message error...");
             ERRF_ThrowResultWithMessage(MAKERESULT(RL_FATAL, RS_INTERNAL, RM_APPLICATION, 2), "Custom error message from libctru demo!");
         }
 
         if (kDown & KEY_X) {
             // Simulate a CPU exception (data abort)
-            printf("Simulating CPU data abort...\n");
-            gfxFlushBuffers();
+            ptfGfb("Simulating CPU data abort...");
             trigger_data_abort();
         }
 
         if (kDown & KEY_Y) {
             // Log an error without causing reboot
-            printf("Logging non-fatal error...\n");
+            ptfGfb("Logging non-fatal error...");
             Result rc = ERRF_LogResult(MAKERESULT(RL_USAGE, RS_NOTSUPPORTED, RM_APPLICATION, 3));
             
             if (R_SUCCEEDED(rc)) {
-                printf("Error logged successfully!\n");
+                ptfGfb("Error logged successfully!");
             } else {
                 printf("Logging failed! 0x%08lX\n", rc);
             }
@@ -91,8 +94,7 @@ int main() {
 
         if (kDown & KEY_L) {
             // Simulate NAND damaged error
-            printf("Throwing NAND damaged error...\n");
-            gfxFlushBuffers();
+            ptfGfb("Throwing NAND damaged error...");
             
             ERRF_FatalErrInfo errorInfo = {
                 .type = ERRF_ERRTYPE_NAND_DAMAGED,
@@ -110,8 +112,7 @@ int main() {
 
         if (kDown & KEY_R) {
             // Simulate card removed error
-            printf("Throwing card removed error...\n");
-            gfxFlushBuffers();
+            ptfGfb("Throwing card removed error...");
             
             ERRF_FatalErrInfo errorInfo = {
                 .type = ERRF_ERRTYPE_CARD_REMOVED,
@@ -129,15 +130,13 @@ int main() {
 
         if (kDown & KEY_ZL) {
             // Trigger prefetch abort
-            printf("Triggering prefetch abort...\n");
-            gfxFlushBuffers();
+            ptfGfb("Triggering prefetch abort...");
             trigger_prefetch_abort();
         }
 
         if (kDown & KEY_ZR) {
             // Simulate undefined instruction exception
-            printf("Simulating undefined instruction...\n");
-            gfxFlushBuffers();
+            ptfGfb("Simulating undefined instruction...\n");
             
             ERRF_FatalErrInfo errorInfo = {
                 .type = ERRF_ERRTYPE_EXCEPTION,
