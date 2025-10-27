@@ -19,7 +19,7 @@ void error(int type) {
     errorInit(&errorCtx, ERROR_TEXT, CFG_LANGUAGE_EN);
     errorText(&errorCtx, "An error has occurred");
     
-    if (type == 1) errorCtx.errorCode = rand() % 9999999;
+    if (type == 1) errorCtx.errorCode = rand();
     else if (type == 2) errorCtx.homeButton = false;
     else if (type == 3) errorCtx.type = ERROR_TYPE_EULA_DRAW_ONLY;
     else if (type == 4) errorCtx.type = ERROR_TYPE_EULA_FIRST_BOOT;
@@ -42,9 +42,7 @@ void printText(int code) {
 int main() {
     // Initialize services
     gfxInitDefault();
-    cfguInit();
     consoleInit(GFX_TOP, NULL);
-    aptSetHomeAllowed(true);
     printText(1);
 
     int code = 1;
@@ -71,7 +69,6 @@ int main() {
     }
 
     // Cleanup
-    cfguExit();
     gfxExit();
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -166,5 +166,5 @@ int main() {
     // Cleanup
     errfExit();
     gfxExit();
-    return 0;
+    return EXIT_SUCCESS;
 }
